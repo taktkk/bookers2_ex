@@ -1,0 +1,31 @@
+
+
+    <h2>User info</h2>
+      <%= image_tag user.get_profile_image(63,63) %>
+      
+      			<table class="table">
+              <tbody>
+                <tr>
+                  <th>name</th><th><%= user.name %></th>
+                </tr>
+                <tr>
+                  <th>introduction</th><th><%= user.introduction %></th>
+                </tr>
+              </tbody>
+            </table>
+            
+       
+      <!--<% if user == current_user %>-->
+      <!--	<div class="row">-->
+      <!--    <a class="btn btn-outline-secondary btn-block fas fa-user-cog edit_user_62845" href="/users/.id/edit"></a>-->
+      <!--  </div>-->
+      <!--<% end %>	-->
+
+
+      
+        <div class="row">
+    	    <%= link_to edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-block ' do %>
+    	      <i class="fas fa-user-cog"></i>
+    	    
+  	    </div>
+      <% end %>	
