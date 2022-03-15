@@ -25,7 +25,15 @@ Rails.application.routes.draw do
   get 'books/:id/edit' => 'books#edit', as: 'edit_book'
   patch 'books/:id' => 'books#update', as: 'update_book'
   
-  resources :books
+  resources :books do
+    
+    resource :favorites, only: [:create, :destroy]
+    resources :book_comments, only: [:create, :destroy]
+    
+  end
+  
+  
+  
   resources :users
   
   

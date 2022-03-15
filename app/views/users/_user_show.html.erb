@@ -15,17 +15,12 @@
             </table>
             
        
-      <!--<% if user == current_user %>-->
-      <!--	<div class="row">-->
-      <!--    <a class="btn btn-outline-secondary btn-block fas fa-user-cog edit_user_62845" href="/users/.id/edit"></a>-->
-      <!--  </div>-->
-      <!--<% end %>	-->
-
+      
 
       
         <div class="row">
-    	    <%= link_to edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-block ' do %>
+    	    <%= link_to edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-block' do %>
     	      <i class="fas fa-user-cog"></i>
-    	    
-  	    </div>
-      <% end %>	
+    	   
+          <% end %>	
+      </div>

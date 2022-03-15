@@ -44,10 +44,30 @@
 						<td><%= link_to book_path(book.id) do %> 
 				          <%= book.title %>
 				        <% end %>
-				    </td>
+				     </td>
 						<td><%= book.body %></td>
-			  			
 						
+						<td>
+									          	<% if book.favorited_by?(current_user) %>
+														    <p>
+														      <%= link_to book_favorites_path(book.id), class: 'post-btn', method: :delete do %>
+														        <i class="fa-solid fa-heart" style="color: red;"></i>
+														        <span class='post-btn-text' style="color: red;"><%= book.favorites.count %></span>
+														        
+														      <% end %>
+														    </p>
+														    <% else %>
+														    <p>
+														      <%= link_to book_favorites_path(book.id), class: 'post-btn', method: :post do %>
+														        <i class="fa-solid fa-heart" style="color: blue;"></i>
+														        <span class='post-btn-text' style="color: blue;"><%= book.favorites.count %></span>
+														        
+														      <% end %>
+														    </p>
+													    <% end %>
+				        </td>
+			  			
+						    <td><p>コメント数：<%= book.book_comments.count %></p></td>
 					</tr>
 					<% end %>
 				</tbody>
