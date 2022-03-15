@@ -47,7 +47,7 @@
               <li>
                 <%= link_to destroy_user_session_path, class: 'nav-link text-light post-btn', method: :delete do %>
                 <i class="fas fa-sign-out-alt"></i>
-                <span class='post-btn-text'>Log out</span>
+                <span class='post-btn-text'>logout</span>
                 <% end %>
               </li>
             <% else %>
@@ -69,14 +69,14 @@
               <li>
                 <%= link_to new_user_registration_path, class: 'nav-link text-light post-btn' do %>
                 <i class="fas fa-user-plus"></i>
-                <span class='post-btn-text'>Sign up</span>
+                <span class='post-btn-text'>sign up</span>
                 <% end %>
               </li>
               
               <li>
                 <%= link_to new_user_session_path, class: 'nav-link text-light post-btn' do %>
                 <i class="fas fa-sign-in-alt"></i>
-                <span class='post-btn-text'>Log in</span>
+                <span class='post-btn-text'>login</span>
                 <% end %>
               </li>
             <% end %>
