@@ -1,32 +1,39 @@
 	<!--<%= alert %>-->
-
-
-<!-- ユーザーの詳細 -->
-<!--<div>-->
-<!--  <h2>User info</h2>-->
-<!--  <%= image_tag @user.get_profile_image(100,100) %>-->
-  
-<!--  <h3>name  <%= @user.name %></h3>-->
-  
-<!--  <h3>introduction <%= @user.introduction %></h3>-->
-  
-  <!--<%= current_user.name %>-->
-  <!--<%= current_user.introduction %>-->
-  
-  <!--<% if @user == current_user %>-->
-  <!--	<p><%= link_to "プロフィール編集", edit_user_path(@user.id) %></p>-->
-  <!--<% end %>	-->
-<!--</div>-->
-
-
-
-
-
 <div class="container px-5 px-sm-0">
 
 		<div class="row">
 						<div class="col-md-3">
 							<%= render 'users/user_show', user: @user %>
+							
+							
+							<div class='row'>
+        <% if current_user != @user %>
+            <% if @user.followed_by?(current_user) %>
+              <p><%=link_to "フォロー済み", user_relationships_path(@user.id), method: :delete, class: 'btn btn-success' %></p>
+            <% else %>
+              <p><%=link_to "フォローする", user_relationships_path(@user.id), method: :post, class: 'btn btn-success' %></p>
+            <% end %>
+            
+        <% if (current_user.followed_by?(@user)) && (@user.followed_by?(current_user))  %>
+          <% if @isRoom == true %>
+            <%= link_to 'チャットへ', room_path(@roomId), class:"btn btn-primary btn-lg user-show-chat" %>
+          <% else %>
+            <%= form_with model: @room do |f| %>
+              <%= fields_for @entry do |e| %>
+                <%= e.hidden_field :user_id, value: @user.id %>
+              <% end %>
+              <%= f.submit "チャットを始める", class:"btn btn-primary btn-lg user-show-chat"%>
+            <% end %>
+          <% end %>
+          <% end %>
+        <% end %>
+        
+        
+    	    <%= link_to edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-block' do %>
+    	      <i class="fas fa-user-cog"></i>
+    	   
+          <% end %>	
+      </div>
 							<%= render 'books/book_new', book: @book %>
 						</div>
 			
