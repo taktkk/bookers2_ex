@@ -13,6 +13,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books
     @book = Book.new
+    @today_book = @books.created_today
+    @yesterday_book = @books.created_yesterday
+    @this_week_book = @books.created_this_week
+    @last_week_book = @books.created_last_week
+    
     @currentUserEntry=Entry.where(user_id: current_user.id)
     @userEntry=Entry.where(user_id: @user.id)
     unless @user.id == current_user.id
@@ -51,6 +56,8 @@ class UsersController < ApplicationController
     end  
   end
   
+  
+  
   def follows
     user = User.find(params[:id])
     @users = user.followings
@@ -60,6 +67,18 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     @users = user.followers
   
+  end
+  
+  def search
+    @user = User.find(params[:user_id])
+    @books = @user.books 
+    @book = Book.new
+    if params[:created_at] == ""
+      @search_book = "日付を選択してください"#①
+    else
+      create_at = params[:created_at]
+      @search_book = @books.where(['created_at LIKE ? ', "#{create_at}%"]).count
+    end
   end
   
   

@@ -7,6 +7,9 @@ class BooksController < ApplicationController
     @books = Book.all
     @user = current_user
     @book_favorite_ranks = Book.includes(:favorited_users).sort {|a,b| b.favorited_users.size <=> a.favorited_users.size}
+    @books_create = @user.books
+    @today_book = @books_create.created_today
+    @yesterday_book = @books_create.created_yesterday
   end 
   
   def create

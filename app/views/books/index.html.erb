@@ -73,6 +73,64 @@
 				</tbody>
 			</table>
 
+<table class="table table-bordered">
+   <thead>
+    <tr>
+     <th>６日前</th>
+     <th>5日前</th>
+     <th>4日前</th>
+     <th>3日前</th>
+     <th>２日前</th>
+     <th>昨日</th>
+     <th>今日</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td><%= @books_create.created_6days.count %></td>
+     <td><%= @books_create.created_5days.count %></td>
+     <td><%= @books_create.created_4days.count %></td>
+     <td><%= @books_create.created_3days.count %></td>
+     <td><%= @books_create.created_2days.count %></td>
+     <td><%= @yesterday_book.count %></td>
+     <td><%= @today_book.count %></td>
+    </tr>
+   </tbody>
+  </table>
+			<p>7日間の投稿数の比較</p>
+			
+	<canvas id="myChart" width="300" height="100"> </canvas>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script> 
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',                      
+        data: {
+            labels: ['6日前', '5日前', '4日前', '3日前', '2日前', '1日前', '今日'],
+            datasets: [{
+                label: "投稿した本の数",
+                data: [<%= @books_create.created_6days.count %>, <%= @books_create.created_5days.count %>, <%= @books_create.created_4days.count %>, <%= @books_create.created_3days.count %>, <%= @books_create.created_2days.count %>, <%= @yesterday_book.count %>, <%= @today_book.count%>],
+                backgroundColor: 'rgba(0, 80, 120, 1.0)',
+                borderColor: 'rgba(0, 80, 120, 1.0)',
+                fill: false,
+                lineTension: 0.4
+            }]
+        },
+    });
+</script>
+
+
+<%= form_with url: user_search_path(@user), method: :get, local: false do |f| %>
+  <%= f.date_field :created_at %>　
+  <%= f.submit '検索', class: 'btn btn-primary'  %>
+<% end %>
+
+<div id="search_result"> 
+  <% if @search_book.present? %>
+    <%= render 'search', search_book: @search_book %>　
+  <% end %>
+</div>
+
 		</div>
 
 	</div>

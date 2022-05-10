@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resource :relationships, only: [:create, :destroy]
     get :follows, on: :member # 追加
     get :followers, on: :member # 追加
+    get "search", to: "users#search"
   end
 
   resources :messages, only: [:create]
