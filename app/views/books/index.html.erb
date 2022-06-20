@@ -11,25 +11,31 @@
 <div class="container px-5 px-sm-0">
 
 		<div class="row">
-			
-			
+
+
 
 			<div class="col-md-3">
 				<%= render 'users/user_show', user: @user %>
 				<%= render 'books/book_new', book: @book %>
 			</div>
 
-  
+
 		<div class="col-md-8 offset-md-1">
 
 			<h1>Books</h1>
-			
+			<p>
+        <%= link_to '新しい順', books_path(latest: "true") %>
+       |<%= link_to '古い順', books_path(old: "true") %>
+       |<%= link_to '評価の高い順', books_path(star_count: "true") %>
+      </p>
+
 			<table class="table table-hover table-inverse">
 				<thead>
 					<tr>
 					  <th></th>
 						<th>Title</th>
 						<th>Opinion</th>
+						<th>Category</th>
 						<th colspan="3"></th>
 					</tr>
 				</thead>
@@ -40,20 +46,22 @@
 					  				<%= image_tag book.user.get_profile_image(40,40) %>
 					  		<% end %>
 					  </td>
-					  
-						<td><%= link_to book_path(book.id) do %> 
+
+						<td><%= link_to book_path(book.id) do %>
 				          <%= book.title %>
 				        <% end %>
 				     </td>
 						<td><%= book.body %></td>
-						
+						<td>
+							<%= link_to book.category, search_book_path(keyword: book.category) %>
+						</td>
 						<td>
 									          	<% if book.favorited_by?(current_user) %>
 														    <p>
 														      <%= link_to book_favorites_path(book.id), class: 'post-btn', method: :delete do %>
 														        <i class="fa-solid fa-heart" style="color: red;"></i>
 														        <span class='post-btn-text' style="color: red;"><%= book.favorites.count %></span>
-														        
+
 														      <% end %>
 														    </p>
 														    <% else %>
@@ -61,18 +69,92 @@
 														      <%= link_to book_favorites_path(book.id), class: 'post-btn', method: :post do %>
 														        <i class="fa-solid fa-heart" style="color: blue;"></i>
 														        <span class='post-btn-text' style="color: blue;"><%= book.favorites.count %></span>
-														        
+
 														      <% end %>
 														    </p>
 													    <% end %>
 				        </td>
-			  			
+				        <td>
+				          <div id="star-rate<%= book.id%>"> </div>    
+				          <script>
+				            $('#star-rate<%= book.id %>').empty();
+				            $('#star-rate<%= book.id%>').raty({
+				              size      : 36,
+				              starOff   : '<%= asset_path('star-off.png') %>',
+				              starOn    : '<%= asset_path('star-on.png') %>',
+				              starHalf  : '<%= asset_path('star-half.png') %>',
+				              half      : true,
+				              readOnly: true,
+				              score: <%= book.star %>,
+				            });
+				          </script>
+				          
+								</td>
 						    <td><p>コメント数：<%= book.book_comments.count %></p></td>
+						    <td><%= l book.created_at %></td>
 					</tr>
 					<% end %>
 				</tbody>
 			</table>
+
+<table class="table table-bordered">
+   <thead>
+    <tr>
+     <th>６日前</th>
+     <th>5日前</th>
+     <th>4日前</th>
+     <th>3日前</th>
+     <th>２日前</th>
+     <th>昨日</th>
+     <th>今日</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td><%= @books_create.created_6days.count %></td>
+     <td><%= @books_create.created_5days.count %></td>
+     <td><%= @books_create.created_4days.count %></td>
+     <td><%= @books_create.created_3days.count %></td>
+     <td><%= @books_create.created_2days.count %></td>
+     <td><%= @yesterday_book.count %></td>
+     <td><%= @today_book.count %></td>
+    </tr>
+   </tbody>
+  </table>
+			<p>7日間の投稿数の比較</p>
 			
+	<canvas id="myChart" width="300" height="100"> </canvas>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script> 
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',                      
+        data: {
+            labels: ['6日前', '5日前', '4日前', '3日前', '2日前', '1日前', '今日'],
+            datasets: [{
+                label: "投稿した本の数",
+                data: [<%= @books_create.created_6days.count %>, <%= @books_create.created_5days.count %>, <%= @books_create.created_4days.count %>, <%= @books_create.created_3days.count %>, <%= @books_create.created_2days.count %>, <%= @yesterday_book.count %>, <%= @today_book.count%>],
+                backgroundColor: 'rgba(0, 80, 120, 1.0)',
+                borderColor: 'rgba(0, 80, 120, 1.0)',
+                fill: false,
+                lineTension: 0.4
+            }]
+        },
+    });
+</script>
+
+
+<%= form_with url: user_search_path(@user), method: :get, local: false do |f| %>
+  <%= f.date_field :created_at %>　
+  <%= f.submit '検索', class: 'btn btn-primary'  %>
+<% end %>
+
+<div id="search_result"> 
+  <% if @search_book.present? %>
+    <%= render 'search', search_book: @search_book %>　
+  <% end %>
+</div>
+
 		</div>
 
 	</div>
