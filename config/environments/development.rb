@@ -78,7 +78,7 @@ Rails.application.configure do
   config.active_job.queue_adapter = :inline
 
 
-  config.hosts << "6e5931b3173d42ab81a4df9f5e843350.vfs.cloud9.us-east-1.amazonaws.com"
+  config.hosts << "fed6824ae95b41c7909d674f1a7fe901.vfs.cloud9.ap-northeast-1.amazonaws.com"
 
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   config.action_mailer.raise_delivery_errors = true
